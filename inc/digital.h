@@ -50,11 +50,21 @@ extern "C" {
 
 /* === Definicion y Macros publicos ======================================== */
 
+#include <stdint.h>
+
 /* == Declaraciones de tipos de datos publicos ============================= */
+
+typedef struct salida_digital_s * salida_digital_p;
+
 
 /* === Declaraciones de variables publicas ================================= */
 
 /* === Declaraciones de funciones publicas ================================= */
+
+salida_digital_p crearsalidadigital(uint8_t puerto, uint8_t bit);
+void activarsalidadigital(salida_digital_p salida);
+void desactivarsalidadigital(salida_digital_p salida);
+void cambiarsalidadigital(salida_digital_p salida);
 
 /* === Ciere de documentacion ============================================== */
 #ifdef __cplusplus

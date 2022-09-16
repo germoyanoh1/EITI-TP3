@@ -43,6 +43,10 @@
 
 /* === Definicion y Macros privados ======================================== */
 
+struct salida_digital_s {
+
+};
+
 /* === Declaraciones de tipos de datos privados ============================ */
 
 /* === Definiciones de variables privadas ================================== */
@@ -54,6 +58,22 @@
 /* === Definiciones de funciones privadas ================================== */
 
 /* === Definiciones de funciones publicas ================================== */
+
+salida_digital_p crearsalidadigital(uint8_t puerto, uint8_t bit){
+    return 0;
+}
+
+void activarsalidadigital(salida_digital_p salida){
+
+}
+
+void desactivarsalidadigital(salida_digital_p salida){
+
+}
+
+void cambiarsalidadigital(salida_digital_p salida){
+
+}
 
 /* === Ciere de documentacion ============================================== */
 
