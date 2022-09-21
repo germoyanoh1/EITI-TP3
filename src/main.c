@@ -41,6 +41,7 @@
 /* === Headers files inclusions =============================================================== */
 
 #include "chip.h"
+#include "digital.h"
 #include <stdbool.h>
 
 /* === Macros definitions ====================================================================== */
@@ -167,12 +168,16 @@ int main(void) {
     Chip_SCU_PinMuxSet(TEC_4_PORT, TEC_4_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_4_FUNC);
     Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, TEC_4_GPIO, TEC_4_BIT, false);
 
+    salida_digital_p led_azul = crearsalidadigital(LED_B_GPIO, LED_B_PIN);
+
     while (true) {
         /*Programacion para encender el led BLUE, al mantener presionada la tecla 1*/
         if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, TEC_1_GPIO, TEC_1_BIT) == 0) {
-            Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_B_GPIO, LED_B_BIT, true);
+            activarsalidadigital(led_azul);
+            //Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_B_GPIO, LED_B_BIT, true);
         } else {
-            Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_B_GPIO, LED_B_BIT, false);
+            desactivarsalidadigital(led_azul);
+            //Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_B_GPIO, LED_B_BIT, false);
         }
 
         /*Programacion para encender y apagar el led 1, cdo presiono la tecla 2*/
