@@ -17,8 +17,8 @@
 /* === Definicion y Macros privados ======================================== */
 
 struct salida_digital_s {
-    uint8_t puerto;
-    uint8_t pin;
+    uint8_t gpio;
+    uint8_t bit;
 
 };
 
@@ -36,18 +36,20 @@ static struct salida_digital_s instancia;
 
 /* === Definiciones de funciones publicas ================================== */
 
-salida_digital_p crearsalidadigital(uint8_t puerto, uint8_t pin){
-    instancia.puerto = puerto;
-    instancia.pin = pin;
+salida_digital_p crearsalidadigital(uint8_t gpio, uint8_t bit){
+    instancia.gpio = gpio;
+    instancia.bit = bit;
+    Chip_GPIO_SetPinState(LPC_GPIO_PORT, gpio, bit, false);
+    Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, gpio, bit, true);
     return &instancia;
 }
 
 void activarsalidadigital(salida_digital_p salida){
-    Chip_GPIO_SetPinState(LPC_GPIO_PORT, salida->puerto, salida->pin, true);
+    Chip_GPIO_SetPinState(LPC_GPIO_PORT, salida->gpio, salida->bit, true);
 }
 
 void desactivarsalidadigital(salida_digital_p salida){
-    Chip_GPIO_SetPinState(LPC_GPIO_PORT, salida->puerto, salida->pin, false);
+    Chip_GPIO_SetPinState(LPC_GPIO_PORT, salida->gpio, salida->bit, false);
 }
 
 void cambiarsalidadigital(salida_digital_p salida){
