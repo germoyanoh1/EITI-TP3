@@ -169,6 +169,9 @@ int main(void) {
     Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, TEC_4_GPIO, TEC_4_BIT, false);
 
     salida_digital_p led_azul = crearsalidadigital(LED_B_GPIO, LED_B_PIN);
+    salida_digital_p led_uno = crearsalidadigital(LED_1_GPIO, LED_1_PIN);
+    salida_digital_p led_dos = crearsalidadigital(LED_2_GPIO, LED_2_PIN);
+    salida_digital_p led_tres = crearsalidadigital(LED_3_GPIO, LED_3_PIN);
 
     while (true) {
         /*Programacion para encender el led BLUE, al mantener presionada la tecla 1*/
@@ -182,24 +185,29 @@ int main(void) {
 
         /*Programacion para encender y apagar el led 1, cdo presiono la tecla 2*/
         current_state = (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, TEC_2_GPIO, TEC_2_BIT) == 0);
+
         if ((current_state) && (!last_state)) {
-            Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, LED_1_GPIO, LED_1_BIT);
+            cambiarsalidadigital(led_uno);
+            //Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, LED_1_GPIO, LED_1_BIT);
         }
         last_state = current_state;
 
         /*Codigo que enciende el led 2 con la tecla 3 y lo apaga con la tecla 4*/
         if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, TEC_3_GPIO, TEC_3_BIT) == 0) {
-            Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_2_GPIO, LED_2_BIT, true);
+            activarsalidadigital(led_dos);
+            //Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_2_GPIO, LED_2_BIT, true);
         }
         if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, TEC_4_GPIO, TEC_4_BIT) == 0) {
-            Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_2_GPIO, LED_2_BIT, false);
+            desactivarsalidadigital(led_dos);
+            //Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_2_GPIO, LED_2_BIT, false);
         }
 
         /*Divisor para encender y apagar el led 3 cdo el programa esta corriendo*/
         divisor++;
         if (divisor == 5) {
             divisor = 0;
-            Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, LED_3_GPIO, LED_3_BIT);
+            cambiarsalidadigital(led_tres);
+            //Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, LED_3_GPIO, LED_3_BIT);
         }
 
         /*Codigo perdida de tiempo para absorver el rebote al presionar teclas*/
