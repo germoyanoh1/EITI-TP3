@@ -22,18 +22,29 @@
     #define SALIDAS_INSTANCIAS     4
 #endif
 
+#ifndef ENTRADAS_INSTANCIAS
+    #define ENTRADAS_INSTANCIAS     4
+#endif
+
 /* === Declaraciones de tipos de datos privados ============================ */
 
 struct salida_digital_s {
     uint8_t gpio;
     uint8_t bit;
     bool ocupada;
+};
 
+struct entrada_digital_s {
+    uint8_t gpio;
+    uint8_t bit;
+    bool ocupada;
 };
 
 /* === Definiciones de variables privadas ================================== */
 
 static struct salida_digital_s instancia[SALIDAS_INSTANCIAS] = {0};
+
+static struct entrada_digital_s instanciaent[ENTRADAS_INSTANCIAS] = {0};
 
 /* === Definiciones de variables publicas ================================== */
 
@@ -55,21 +66,29 @@ salida_digital_p salidadigitalocupada (void) {
     return salida;
 }
 
+entrada_digital_p entradadigitalocupada (void) {
+    entrada_digital_p entrada = NULL;
+
+    for (int index = 0 ; index < ENTRADAS_INSTANCIAS ; index++) {
+        if (instanciaent[index].ocupada == false) {
+
+            instanciaent[index].ocupada = true;
+            entrada = &instanciaent[index];
+            break;
+        }
+    }
+    return entrada;
+}
 /* === Definiciones de funciones publicas ================================== */
 
 salida_digital_p crearsalidadigital(uint8_t gpio, uint8_t bit){
-
     salida_digital_p salida = salidadigitalocupada ();
-
     if (salida){
         salida->gpio = gpio;
         salida->bit = bit;
-
         Chip_GPIO_SetPinState(LPC_GPIO_PORT, salida->gpio, salida->bit, false);
         Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, salida->gpio, salida->bit, true);
-
     }
-
     return salida;
 }
 
@@ -90,6 +109,17 @@ void cambiarsalidadigital(salida_digital_p salida){
         Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, salida->gpio, salida->bit);
     }
 }
+
+entrada_digital_p crearentradadigital(uint8_t gpio, uint8_t bit){
+    entrada_digital_p entrada = entradadigitalocupada ();
+    if (entrada){
+        entrada->gpio = gpio;
+        entrada->bit = bit;
+        Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, entrada->gpio, entrada->bit, false);
+    }
+    return entrada;
+}
+
 
 /* === Ciere de documentacion ============================================== */
 
