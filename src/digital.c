@@ -54,10 +54,8 @@ static struct entrada_digital_s instanciaent[ENTRADAS_INSTANCIAS] = {0};
 
 salida_digital_p salidadigitalocupada (void) {
     salida_digital_p salida = NULL;
-
     for (int index = 0 ; index < SALIDAS_INSTANCIAS ; index++) {
         if (instancia[index].ocupada == false) {
-
             instancia[index].ocupada = true;
             salida = &instancia[index];
             break;
@@ -68,10 +66,8 @@ salida_digital_p salidadigitalocupada (void) {
 
 entrada_digital_p entradadigitalocupada (void) {
     entrada_digital_p entrada = NULL;
-
     for (int index = 0 ; index < ENTRADAS_INSTANCIAS ; index++) {
         if (instanciaent[index].ocupada == false) {
-
             instanciaent[index].ocupada = true;
             entrada = &instanciaent[index];
             break;
@@ -120,6 +116,15 @@ entrada_digital_p crearentradadigital(uint8_t gpio, uint8_t bit){
     return entrada;
 }
 
+bool estadoentradadigital (entrada_digital_p entrada){
+    int estado = false;
+    if(entrada){
+        if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, entrada->gpio, entrada->bit) == 0){
+            estado = true;
+        }
+    }
+    return estado;
+}
 
 /* === Ciere de documentacion ============================================== */
 

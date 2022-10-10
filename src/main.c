@@ -173,9 +173,12 @@ int main(void) {
     salida_digital_p led_dos = crearsalidadigital(LED_2_GPIO, LED_2_PIN);
     salida_digital_p led_tres = crearsalidadigital(LED_3_GPIO, LED_3_PIN);
 
+    entrada_digital_p tecla_1 = crearentradadigital(TEC_1_GPIO, TEC_1_BIT);
+
     while (true) {
         /*Programacion para encender el led BLUE, al mantener presionada la tecla 1*/
-        if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, TEC_1_GPIO, TEC_1_BIT) == 0) {
+        //if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, TEC_1_GPIO, TEC_1_BIT) == 0) {
+        if (estadoentradadigital(tecla_1)) {
             activarsalidadigital(led_azul);
             //Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_B_GPIO, LED_B_BIT, true);
         } else {
