@@ -173,10 +173,13 @@ int main(void) {
     salida_digital_p led_dos = crearsalidadigital(LED_2_GPIO, LED_2_PIN);
     salida_digital_p led_tres = crearsalidadigital(LED_3_GPIO, LED_3_PIN);
 
-    entrada_digital_p tecla_1 = crearentradadigital(TEC_1_GPIO, TEC_1_BIT);
+    entrada_digital_p tecla_1 = crearentradadigital(TEC_1_GPIO,TEC_1_BIT);
+    entrada_digital_p tecla_2 = crearentradadigital(TEC_2_GPIO,TEC_2_BIT);
+    entrada_digital_p tecla_3 = crearentradadigital(TEC_3_GPIO,TEC_3_BIT);
+    entrada_digital_p tecla_4 = crearentradadigital(TEC_4_GPIO,TEC_4_BIT);
 
     while (true) {
-        /*Programacion para encender el led BLUE, al mantener presionada la tecla 1*/
+        /*********Programacion para encender el led BLUE, al mantener presionada la tecla 1*/
         //if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, TEC_1_GPIO, TEC_1_BIT) == 0) {
         if (estadoentradadigital(tecla_1)) {
             activarsalidadigital(led_azul);
@@ -186,26 +189,36 @@ int main(void) {
             //Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_B_GPIO, LED_B_BIT, false);
         }
 
-        /*Programacion para encender y apagar el led 1, cdo presiono la tecla 2*/
-        current_state = (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, TEC_2_GPIO, TEC_2_BIT) == 0);
-
-        if ((current_state) && (!last_state)) {
-            cambiarsalidadigital(led_uno);
+        /*********Programacion para encender y apagar el led 1, cdo presiono la tecla 2*/
+        //current_state = (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, TEC_2_GPIO, TEC_2_BIT) == 0);
+        //if ((current_state) && (!last_state)) {
+        //    cambiarsalidadigital(led_uno);
             //Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, LED_1_GPIO, LED_1_BIT);
-        }
-        last_state = current_state;
+        //}
+        //last_state = current_state;
 
-        /*Codigo que enciende el led 2 con la tecla 3 y lo apaga con la tecla 4*/
-        if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, TEC_3_GPIO, TEC_3_BIT) == 0) {
-            activarsalidadigital(led_dos);
+        if(entradadigitalactiva(tecla_2)){
+            cambiarsalidadigital(led_uno);
+        }
+
+        /*********Codigo que enciende el led 2 con la tecla 3 y lo apaga con la tecla 4*/
+        //if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, TEC_3_GPIO, TEC_3_BIT) == 0) {
+        //    activarsalidadigital(led_dos);
             //Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_2_GPIO, LED_2_BIT, true);
-        }
-        if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, TEC_4_GPIO, TEC_4_BIT) == 0) {
-            desactivarsalidadigital(led_dos);
+        //}
+        //if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, TEC_4_GPIO, TEC_4_BIT) == 0) {
+        //    desactivarsalidadigital(led_dos);
             //Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_2_GPIO, LED_2_BIT, false);
+        //}
+
+        if(estadoentradadigital(tecla_3)){
+            activarsalidadigital(led_dos);
+        }
+        if(estadoentradadigital(tecla_4)){
+            desactivarsalidadigital(led_dos);
         }
 
-        /*Divisor para encender y apagar el led 3 cdo el programa esta corriendo*/
+        /**********Divisor para encender y apagar el led 3 cdo el programa esta corriendo*/
         divisor++;
         if (divisor == 5) {
             divisor = 0;
@@ -213,7 +226,7 @@ int main(void) {
             //Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, LED_3_GPIO, LED_3_BIT);
         }
 
-        /*Codigo perdida de tiempo para absorver el rebote al presionar teclas*/
+        /***********Codigo perdida de tiempo para absorver el rebote al presionar teclas*/
         for (int index = 0; index < 100; index++) {
             for (int delay = 0; delay < 25000; delay++) {
                 __asm("NOP");

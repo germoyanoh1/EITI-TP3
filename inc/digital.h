@@ -43,7 +43,9 @@ void cambiarsalidadigital(salida_digital_p salida);
 
 entrada_digital_p crearentradadigital(uint8_t gpio, uint8_t bit);
 bool estadoentradadigital(entrada_digital_p entrada);
-
+bool entradadigitalcambio(entrada_digital_p entrada);
+bool entradadigitalactiva(entrada_digital_p entrada);
+bool entradadigitalinactiva(entrada_digital_p entrada);
 
 /* === Ciere de documentacion ============================================== */
 #ifdef __cplusplus

@@ -38,6 +38,7 @@ struct entrada_digital_s {
     uint8_t gpio;
     uint8_t bit;
     bool ocupada;
+    bool ultimoestado;
 };
 
 /* === Definiciones de variables privadas ================================== */
@@ -117,7 +118,7 @@ entrada_digital_p crearentradadigital(uint8_t gpio, uint8_t bit){
 }
 
 bool estadoentradadigital (entrada_digital_p entrada){
-    int estado = false;
+    bool estado = false;
     if(entrada){
         if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, entrada->gpio, entrada->bit) == 0){
             estado = true;
@@ -126,6 +127,26 @@ bool estadoentradadigital (entrada_digital_p entrada){
     return estado;
 }
 
+bool entradadigitalcambio (entrada_digital_p entrada) {
+    bool estado = estadoentradadigital(entrada);
+    bool resultado = estado && !entrada->ultimoestado;
+    entrada->ultimoestado = estado;
+    return resultado;
+}
+
+bool entradadigitalactiva (entrada_digital_p entrada) {
+    bool estado = estadoentradadigital(entrada);
+    bool resultado = estado && !entrada->ultimoestado;
+    entrada->ultimoestado = estado;
+    return resultado;
+}
+
+bool entradadigitalinactiva (entrada_digital_p entrada) {
+    bool estado = estadoentradadigital (entrada);
+    bool resultado = !estado && !entrada->ultimoestado;
+    entrada->ultimoestado = estado;
+    return resultado;
+}
 /* === Ciere de documentacion ============================================== */
 
 /** @} Final de la definición del modulo para doxygen */
