@@ -125,7 +125,7 @@
 int main(void) {
 
     int divisor  = 0;
-    bool current_state, last_state = false;
+    //bool current_state, last_state = false;
 
     /*esta linea configura el terminal, es decir la patita fisica (con slew rate, etc),asigna funcion de entrada o salida digital*/
     /*SCU son funciones para el control del terminal*/
@@ -155,7 +155,7 @@ int main(void) {
     //Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_3_GPIO, LED_3_BIT, false);
     //Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, LED_3_GPIO, LED_3_BIT, true);
 
-    /******************Definicion de entradas/
+    /******************Definicion de entradas*/
     Chip_SCU_PinMuxSet(TEC_1_PORT, TEC_1_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_1_FUNC);
     //Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, TEC_1_GPIO, TEC_1_BIT, false);//pone el bit como entrada
 
