@@ -125,12 +125,8 @@
 int main(void) {
 
     int divisor  = 0;
-    //bool current_state, last_state = false;
 
-    /*esta linea configura el terminal, es decir la patita fisica (con slew rate, etc),asigna funcion de entrada o salida digital*/
-    /*SCU son funciones para el control del terminal*/
     Chip_SCU_PinMuxSet(LED_R_PORT, LED_R_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_INACT | LED_R_FUNC);
-    /*GPIO es ya cdo queremos apagar o prender cosas*/
     Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_R_GPIO, LED_R_BIT, false);//pone el bit en cero,arranque apagado
     Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, LED_R_GPIO, LED_R_BIT, true);//pone el bit como salida
 
@@ -139,35 +135,23 @@ int main(void) {
     Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, LED_G_GPIO, LED_G_BIT, true);
 
     Chip_SCU_PinMuxSet(LED_B_PORT, LED_B_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_INACT | LED_B_FUNC);
-    //Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_B_GPIO, LED_B_BIT, false);
-    //Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, LED_B_GPIO, LED_B_BIT, true);
 
     /******************/
     Chip_SCU_PinMuxSet(LED_1_PORT, LED_1_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_INACT | LED_1_FUNC);
-    //Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_1_GPIO, LED_1_BIT, false);
-    //Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, LED_1_GPIO, LED_1_BIT, true);
 
     Chip_SCU_PinMuxSet(LED_2_PORT, LED_2_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_INACT | LED_2_FUNC);
-    //Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_2_GPIO, LED_2_BIT, false);
-    //Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, LED_2_GPIO, LED_2_BIT, true);
 
     Chip_SCU_PinMuxSet(LED_3_PORT, LED_3_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_INACT | LED_3_FUNC);
-    //Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_3_GPIO, LED_3_BIT, false);
-    //Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, LED_3_GPIO, LED_3_BIT, true);
 
     /******************Definicion de entradas*/
     Chip_SCU_PinMuxSet(TEC_1_PORT, TEC_1_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_1_FUNC);
-    //Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, TEC_1_GPIO, TEC_1_BIT, false);//pone el bit como entrada
 
     Chip_SCU_PinMuxSet(TEC_2_PORT, TEC_2_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_2_FUNC);
-    //Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, TEC_2_GPIO, TEC_2_BIT, false);
-
+ 
     Chip_SCU_PinMuxSet(TEC_3_PORT, TEC_3_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_3_FUNC);
-    //Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, TEC_3_GPIO, TEC_3_BIT, false);
-
+ 
     Chip_SCU_PinMuxSet(TEC_4_PORT, TEC_4_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_4_FUNC);
-    //Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, TEC_4_GPIO, TEC_4_BIT, false);
-
+   
     salida_digital_p led_azul = crearsalidadigital(LED_B_GPIO, LED_B_PIN);
     salida_digital_p led_uno = crearsalidadigital(LED_1_GPIO, LED_1_PIN);
     salida_digital_p led_dos = crearsalidadigital(LED_2_GPIO, LED_2_PIN);
@@ -180,36 +164,20 @@ int main(void) {
 
     while (true) {
         /*********Programacion para encender el led BLUE, al mantener presionada la tecla 1*/
-        //if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, TEC_1_GPIO, TEC_1_BIT) == 0) {
         if (estadoentradadigital(tecla_1)) {
-            activarsalidadigital(led_azul);
-            //Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_B_GPIO, LED_B_BIT, true);
-        } else {
+            activarsalidadigital(led_azul); 
+        } 
+        else {
             desactivarsalidadigital(led_azul);
-            //Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_B_GPIO, LED_B_BIT, false);
         }
 
         /*********Programacion para encender y apagar el led 1, cdo presiono la tecla 2*/
-        //current_state = (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, TEC_2_GPIO, TEC_2_BIT) == 0);
-        //if ((current_state) && (!last_state)) {
-        //    cambiarsalidadigital(led_uno);
-            //Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, LED_1_GPIO, LED_1_BIT);
-        //}
-        //last_state = current_state;
 
         if(entradadigitalactiva(tecla_2)){
             cambiarsalidadigital(led_uno);
         }
 
         /*********Codigo que enciende el led 2 con la tecla 3 y lo apaga con la tecla 4*/
-        //if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, TEC_3_GPIO, TEC_3_BIT) == 0) {
-        //    activarsalidadigital(led_dos);
-            //Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_2_GPIO, LED_2_BIT, true);
-        //}
-        //if (Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, TEC_4_GPIO, TEC_4_BIT) == 0) {
-        //    desactivarsalidadigital(led_dos);
-            //Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_2_GPIO, LED_2_BIT, false);
-        //}
 
         if(estadoentradadigital(tecla_3)){
             activarsalidadigital(led_dos);
@@ -223,7 +191,6 @@ int main(void) {
         if (divisor == 5) {
             divisor = 0;
             cambiarsalidadigital(led_tres);
-            //Chip_GPIO_SetPinToggle(LPC_GPIO_PORT, LED_3_GPIO, LED_3_BIT);
         }
 
         /***********Codigo perdida de tiempo para absorver el rebote al presionar teclas*/
