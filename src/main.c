@@ -40,73 +40,13 @@
 
 /* === Headers files inclusions =============================================================== */
 
-#include "chip.h"
-#include "digital.h"
+#include "bsp.h"
 #include <stdbool.h>
 
 /* === Macros definitions ====================================================================== */
 
 /*solo le asigna un nombre amigable a los numeros, que estan definidos en el manual de la placa*/
 /*para referirse, a los leds de salida, como a los pulsadores de entrada*/
-#define LED_R_PORT 2
-#define LED_R_PIN 0
-#define LED_R_FUNC SCU_MODE_FUNC4
-#define LED_R_GPIO 5
-#define LED_R_BIT 0
-
-#define LED_G_PORT 2
-#define LED_G_PIN 1
-#define LED_G_FUNC SCU_MODE_FUNC4
-#define LED_G_GPIO 5
-#define LED_G_BIT 1
-
-#define LED_B_PORT 2
-#define LED_B_PIN 2
-#define LED_B_FUNC SCU_MODE_FUNC4
-#define LED_B_GPIO 5
-#define LED_B_BIT 2
-
-#define LED_1_PORT 2
-#define LED_1_PIN 10
-#define LED_1_FUNC SCU_MODE_FUNC0
-#define LED_1_GPIO 0
-#define LED_1_BIT 14
-
-#define LED_2_PORT 2
-#define LED_2_PIN 11
-#define LED_2_FUNC SCU_MODE_FUNC0
-#define LED_2_GPIO 1
-#define LED_2_BIT 11
-
-#define LED_3_PORT 2
-#define LED_3_PIN 12
-#define LED_3_FUNC SCU_MODE_FUNC0
-#define LED_3_GPIO 1
-#define LED_3_BIT 12
-
-#define TEC_1_PORT 1
-#define TEC_1_PIN 0
-#define TEC_1_FUNC SCU_MODE_FUNC0
-#define TEC_1_GPIO 0
-#define TEC_1_BIT 4
-
-#define TEC_2_PORT 1
-#define TEC_2_PIN 1
-#define TEC_2_FUNC SCU_MODE_FUNC0
-#define TEC_2_GPIO 0
-#define TEC_2_BIT 8
-
-#define TEC_3_PORT 1
-#define TEC_3_PIN 2
-#define TEC_3_FUNC SCU_MODE_FUNC0
-#define TEC_3_GPIO 0
-#define TEC_3_BIT 9
-
-#define TEC_4_PORT 1
-#define TEC_4_PIN 6
-#define TEC_4_FUNC SCU_MODE_FUNC0
-#define TEC_4_GPIO 1
-#define TEC_4_BIT 9
 
 /* === Private data type declarations ========================================================== */
 
@@ -125,72 +65,37 @@
 int main(void) {
 
     int divisor  = 0;
-
-    Chip_SCU_PinMuxSet(LED_R_PORT, LED_R_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_INACT | LED_R_FUNC);
-    Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_R_GPIO, LED_R_BIT, false);//pone el bit en cero,arranque apagado
-    Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, LED_R_GPIO, LED_R_BIT, true);//pone el bit como salida
-
-    Chip_SCU_PinMuxSet(LED_G_PORT, LED_G_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_INACT | LED_G_FUNC);
-    Chip_GPIO_SetPinState(LPC_GPIO_PORT, LED_G_GPIO, LED_G_BIT, false);
-    Chip_GPIO_SetPinDIR(LPC_GPIO_PORT, LED_G_GPIO, LED_G_BIT, true);
-
-    Chip_SCU_PinMuxSet(LED_B_PORT, LED_B_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_INACT | LED_B_FUNC);
-
-    /******************/
-    Chip_SCU_PinMuxSet(LED_1_PORT, LED_1_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_INACT | LED_1_FUNC);
-
-    Chip_SCU_PinMuxSet(LED_2_PORT, LED_2_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_INACT | LED_2_FUNC);
-
-    Chip_SCU_PinMuxSet(LED_3_PORT, LED_3_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_INACT | LED_3_FUNC);
-
-    /******************Definicion de entradas*/
-    Chip_SCU_PinMuxSet(TEC_1_PORT, TEC_1_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_1_FUNC);
-
-    Chip_SCU_PinMuxSet(TEC_2_PORT, TEC_2_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_2_FUNC);
- 
-    Chip_SCU_PinMuxSet(TEC_3_PORT, TEC_3_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_3_FUNC);
- 
-    Chip_SCU_PinMuxSet(TEC_4_PORT, TEC_4_PIN, SCU_MODE_INBUFF_EN | SCU_MODE_PULLUP | TEC_4_FUNC);
-   
-    salida_digital_p led_azul = crearsalidadigital(LED_B_GPIO, LED_B_PIN);
-    salida_digital_p led_uno = crearsalidadigital(LED_1_GPIO, LED_1_PIN);
-    salida_digital_p led_dos = crearsalidadigital(LED_2_GPIO, LED_2_PIN);
-    salida_digital_p led_tres = crearsalidadigital(LED_3_GPIO, LED_3_PIN);
-
-    entrada_digital_p tecla_1 = crearentradadigital(TEC_1_GPIO,TEC_1_BIT);
-    entrada_digital_p tecla_2 = crearentradadigital(TEC_2_GPIO,TEC_2_BIT);
-    entrada_digital_p tecla_3 = crearentradadigital(TEC_3_GPIO,TEC_3_BIT);
-    entrada_digital_p tecla_4 = crearentradadigital(TEC_4_GPIO,TEC_4_BIT);
+    placa_p placa = crearplaca();
 
     while (true) {
         /*********Programacion para encender el led BLUE, al mantener presionada la tecla 1*/
-        if (estadoentradadigital(tecla_1)) {
-            activarsalidadigital(led_azul); 
+        if (estadoentradadigital(placa->tecla_1)) {
+            activarsalidadigital(placa->led_azul); 
         } 
         else {
-            desactivarsalidadigital(led_azul);
+            desactivarsalidadigital(placa->led_azul);
         }
 
         /*********Programacion para encender y apagar el led 1, cdo presiono la tecla 2*/
 
-        if(entradadigitalactiva(tecla_2)){
-            cambiarsalidadigital(led_uno);
+        if(entradadigitalactiva(placa->tecla_2)){
+            cambiarsalidadigital(placa->led_uno);
         }
 
         /*********Codigo que enciende el led 2 con la tecla 3 y lo apaga con la tecla 4*/
 
-        if(estadoentradadigital(tecla_3)){
-            activarsalidadigital(led_dos);
+        if(estadoentradadigital(placa->tecla_3)){
+            activarsalidadigital(placa->led_dos);
         }
-        if(estadoentradadigital(tecla_4)){
-            desactivarsalidadigital(led_dos);
+        if(estadoentradadigital(placa->tecla_4)){
+            desactivarsalidadigital(placa->led_dos);
         }
 
         /**********Divisor para encender y apagar el led 3 cdo el programa esta corriendo*/
         divisor++;
         if (divisor == 5) {
             divisor = 0;
-            cambiarsalidadigital(led_tres);
+            cambiarsalidadigital(placa->led_tres);
         }
 
         /***********Codigo perdida de tiempo para absorver el rebote al presionar teclas*/
